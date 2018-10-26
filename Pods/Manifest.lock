@@ -1,0 +1,42 @@
+PODS:
+  - Alamofire (4.7.3)
+  - CocoaLumberjack (3.4.2):
+    - CocoaLumberjack/Default (= 3.4.2)
+    - CocoaLumberjack/Extensions (= 3.4.2)
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Extensions (3.4.2):
+    - CocoaLumberjack/Default
+  - PKHUD (5.2.0)
+  - SVGKit (2.0.1):
+    - CocoaLumberjack (~> 3.x)
+
+DEPENDENCIES:
+  - Alamofire (= 4.7.3)
+  - PKHUD (~> 5.0)
+  - SVGKit (from `https://github.com/SVGKit/SVGKit.git`, branch `2.x`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - CocoaLumberjack
+    - PKHUD
+
+EXTERNAL SOURCES:
+  SVGKit:
+    :branch: 2.x
+    :git: https://github.com/SVGKit/SVGKit.git
+
+CHECKOUT OPTIONS:
+  SVGKit:
+    :commit: 7f22993eb99783bfe8274c95465f72ddf0cb86e5
+    :git: https://github.com/SVGKit/SVGKit.git
+
+SPEC CHECKSUMS:
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  PKHUD: dd5357ac65f26115c35c4a68e9b328053326c5fe
+  SVGKit: 79244ce687db9e272cf25a90254abeef954475d5
+
+PODFILE CHECKSUM: 34671cbcfd2cbcbdc2ab7c76181056c3ac5a2283
+
+COCOAPODS: 1.5.3
