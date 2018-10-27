@@ -3,6 +3,7 @@
   "version": "2.0.1",
   "license": "MIT",
   "platforms": {
+    "osx": "10.9",
     "ios": "5.0",
     "tvos": "9.0"
   },
@@ -21,17 +22,24 @@
     "git": "https://github.com/SVGKit/SVGKit.git",
     "branch": "2.x"
   },
+  "source_files": [
+    "Source/*{.h,m}",
+    "Source/**/*{.h,m}"
+  ],
   "ios": {
-    "source_files": [
-      "Source/*{.h,m}",
-      "Source/DOM classes/**/*.{h,m}",
-      "Source/Exporters/*.{h,m}",
-      "Source/Parsers/**/*.{h,m}",
-      "Source/QuartzCore additions/**/*.{h,m}",
-      "Source/Sources/**/*.{h,m}",
-      "Source/UIKit additions/**/*.{h,m}",
-      "Source/Unsorted/**/*.{h,m}"
+    "exclude_files": [
+      "Source/AppKit additions/*.{h,m}",
+      "Source/Exporters/SVGKExporterNSImage.{h,m}"
     ]
+  },
+  "tvos": {
+    "exclude_files": [
+      "Source/AppKit additions/*{.h,m}",
+      "Source/Exporters/SVGKExporterNSImage{.h,m}"
+    ]
+  },
+  "osx": {
+    "exclude_files": "Source/Exporters/SVGKExporterUIImage{.h,m}"
   },
   "libraries": "xml2",
   "frameworks": [
@@ -43,7 +51,7 @@
       "~> 3.x"
     ]
   },
-  "prefix_header_file": "SVGKitLibrary/SVGKit-iOS/SVGKit-iOS-Prefix.pch",
+  "prefix_header_file": "SVGKitLibrary/SVGKit-iOS/SVGKit-Prefix.pch",
   "requires_arc": true,
   "xcconfig": {
     "CLANG_CXX_LANGUAGE_STANDARD": "gnu++11",

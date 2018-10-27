@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "SVGKDefine.h"
 #import "SVGKImage.h"
 #import "SVGKit.h"
 #import "SVGKSource.h"
@@ -111,6 +112,8 @@
 #import "SVGKExporterNSData.h"
 #import "SVGKExporterUIImage.h"
 #import "SVGKImage+CGContext.h"
+#import "NSCharacterSet+SVGKExtensions.h"
+#import "NSData+NSInputStream.h"
 #import "SVGKParserDefsAndUse.h"
 #import "SVGKParserDOM.h"
 #import "SVGKParserGradient.h"
@@ -133,8 +136,6 @@
 #import "SVGKSourceNSData.h"
 #import "SVGKSourceString.h"
 #import "SVGKSourceURL.h"
-#import "NSCharacterSet+SVGKExtensions.h"
-#import "NSData+NSInputStream.h"
 #import "SVGKFastImageView.h"
 #import "SVGKImageView.h"
 #import "SVGKLayeredImageView.h"

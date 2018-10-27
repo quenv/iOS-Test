@@ -53,7 +53,7 @@ class CountryViewModelController {
     // MARK: - Filter data
     func filterData(_ name: String) -> [CountryViewModel] {
         var filterList = [CountryViewModel]()
-        filterList = viewModels.filter({ (country) -> Bool in
+         filterList = viewModels.filter({ (country) -> Bool in
             return country.name.lowercased().contains(name.lowercased())
         })
         return filterList
