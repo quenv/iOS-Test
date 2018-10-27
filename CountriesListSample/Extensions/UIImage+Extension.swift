@@ -26,11 +26,11 @@ extension UIImage {
                 completionHandler(nil)
                 return
             }
+            guard let svg = SVGKImage(data: flagData) else {
+                completionHandler(nil)
+                return
+            }
             DispatchQueue.global().async {
-                guard let svg = SVGKImage(data: flagData) else {
-                    completionHandler(nil)
-                    return
-                }
                 if svg.hasSize() {
                     svg.size = CLSize.imageSize
                 }
