@@ -28,9 +28,7 @@ struct APIManager: Requestable {
         request(apiRequest).responseData { (response) in
             switch response.result {
             case .success(let flagData):
-                DispatchQueue.global().async {
                     completionHandler(flagData, nil)
-                }
             case .failure(_):
                 completionHandler(nil, NSError.createError(description: CLMessage.dataError))
             }
