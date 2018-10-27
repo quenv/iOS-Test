@@ -2,7 +2,7 @@
 //  MainService.swift
 //  CountriesList
 //
-//  Created by admin on 10/24/18.
+//  Created by QueNV on 10/24/18.
 //  Copyright © 2018 smartosc. All rights reserved.
 //
 
@@ -32,9 +32,7 @@ struct APIManager: Requestable {
                     completionHandler(flagData, nil)
                 }
             case .failure(_):
-                DispatchQueue.global().async {
                 completionHandler(nil, NSError.createError(description: CLMessage.dataError))
-                }
             }
         }
     }

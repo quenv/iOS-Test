@@ -19,20 +19,19 @@ class MainViewController: UIViewController {
     private let countryViewModelController = CountryViewModelController()
     private let imageLoadQueue = OperationQueue()
     private var imageLoadOperations = [IndexPath: ImageLoadOperation]()
+    
     var isGroup = false
-    
-    
+    var filteredCountries = [CountryViewModel]()
+    var search = UISearchController(searchResultsController: nil)
+    var dataFilterByRegion = DataTypeRegion()
+
     // MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         HUD.show(.progress)
         setupTableView()
+        addSearchBar()
         getData()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationView()
     }
     
     // MARK: - Handle data
@@ -57,6 +56,43 @@ class MainViewController: UIViewController {
         }
     }
     
+    //MARK: - Search bar
+    fileprivate func addSearchBar() {
+        search.searchResultsUpdater = self
+        search.searchBar.placeholder = CLString.searchPlaceholder
+        search.searchBar.tintColor = .white
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): UIColor.white]
+        self.navigationItem.searchController = search
+    }
+    
+    fileprivate func searchBarIsEmpty() -> Bool {
+        return search.searchBar.text?.isEmpty ?? true
+    }
+    
+    fileprivate func filterContentForSearchText(searchText: String) {
+        filteredCountries = countryViewModelController.viewModels.filter({ (country) -> Bool in
+            return country.name.lowercased().contains(searchText.lowercased())
+        })
+        updateDataFilter()
+        self.tableView.reloadData()
+    }
+    
+    fileprivate func isFiltering() -> Bool {
+        return search.isActive && !searchBarIsEmpty()
+    }
+    
+    func updateDataFilter(){
+        dataFilterByRegion = Dictionary(grouping: filteredCountries,
+                                  by: { $0.region ?? CLString.emptyString })
+    }
+    
+    func getListCountriesDict() -> DataTypeRegion {
+        if isFiltering() {
+            return dataFilterByRegion
+        }
+        return countryViewModelController.listDataByRegion(isGroupRegion: self.isGroup)    
+    }
+    
     // MARK: - Setup View
     private func setupTableView(){
         tableView.register(UINib(nibName: CountryCell.className, bundle: nil), forCellReuseIdentifier: CountryCell.className)
@@ -67,11 +103,7 @@ class MainViewController: UIViewController {
         if #available(iOS 10.0, *) {
             tableView.prefetchDataSource = self
         }
-        
-    }
-    
-    private func setupNavigationView(){
-        self.title = CLString.mainTitle
+        tableView.tableFooterView = UIView()
     }
     
     // MARK: - Handle action
@@ -82,6 +114,23 @@ class MainViewController: UIViewController {
             self.isGroup = true
         }
         self.tableView.reloadData()
+    }
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let identifier = segue.identifier else { return }
+        switch identifier {
+        case CLString.showDetailCountry:
+            guard let indexPath = sender as? IndexPath else { return }
+            guard let detailVC = segue.destination as? DetailViewController else { return }
+            if isFiltering() {
+                detailVC.countryModel = filteredCountries[indexPath.row]
+            } else if let viewModel = countryViewModelController.viewModel(at: indexPath.row) {
+                detailVC.countryModel = viewModel
+            }
+        default:
+            break
+        }
     }
     
 }
@@ -100,7 +149,7 @@ extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if (self.isGroup) {
             if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CountryHeaderView.className) as? CountryHeaderView {
-                let listCountriesDic = countryViewModelController.listDataByRegion(isGroupRegion: self.isGroup)
+                let listCountriesDic = getListCountriesDict()
                 let region = Array(listCountriesDic.keys)[section]
                 headerView.titleLabel.text = !region.isEmpty ? region : CLString.unknown
                 return headerView
@@ -112,14 +161,7 @@ extension MainViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let detailVC = UIStoryboard.init(name: CLString.mainStoryboardName, bundle: Bundle.main).instantiateViewController(withIdentifier: DetailViewController.className) as? DetailViewController {
-            if let viewModel = countryViewModelController.viewModel(at: indexPath.row) {
-                detailVC.countryModel = viewModel
-            }
-            navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            self.navigationController?.pushViewController(detailVC, animated: true)
-        }
-        
+        performSegue(withIdentifier: CLString.showDetailCountry, sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -135,12 +177,15 @@ extension MainViewController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let listCountriesDic = countryViewModelController.listDataByRegion(isGroupRegion: self.isGroup)
-        let listCountries = Array(listCountriesDic.values)[section]
+        let listCountriesDict = getListCountriesDict()
+        let listCountries = Array(listCountriesDict.values)[section]
         return listCountries.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if isFiltering() {
+            return dataFilterByRegion.count
+        }
         return countryViewModelController.listDataByRegion(isGroupRegion: self.isGroup).count
     }
     
@@ -148,10 +193,9 @@ extension MainViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CountryCell.className, for: indexPath) as? CountryCell else {
             return UITableViewCell()
         }
-        let listCountriesDict = countryViewModelController.listDataByRegion(isGroupRegion: self.isGroup)
+        let listCountriesDict = getListCountriesDict()
         let dataModel = Array(listCountriesDict.values)[indexPath.section]
         let viewModel = dataModel[indexPath.row]
-        
         cell.configCell(viewModel)
         if let imageLoadOperation = imageLoadOperations[indexPath],
             let image = imageLoadOperation.image {
@@ -169,7 +213,6 @@ extension MainViewController: UITableViewDataSource {
             imageLoadQueue.addOperation(imageLoadOperation)
             imageLoadOperations[indexPath] = imageLoadOperation
         }
-        
         return cell
     }
     
@@ -200,6 +243,13 @@ extension MainViewController: UITableViewDataSourcePrefetching {
             imageLoadOperation.cancel()
             imageLoadOperations.removeValue(forKey: indexPath)
         }
+    }
+}
+
+//MARK: - Search result updating
+extension MainViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchText: searchController.searchBar.text!)
     }
 }
 

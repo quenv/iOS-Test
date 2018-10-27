@@ -10,5 +10,12 @@ import Foundation
 
 enum SelectedFilterCountry: Int {
     case allCountries = 0
-    case region = 1
+    case region
+}
+
+enum SectionDetail: Int {
+    case capital = 0
+    case region
+    case population
+    case nativeName
 }

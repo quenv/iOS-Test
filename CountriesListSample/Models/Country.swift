@@ -16,8 +16,8 @@ struct Country: Codable {
         case capital
         case population
         case region
-        case alpha3Code
-        case borders
+        case subregion
+        case nativeName
     }
     
     // MARK: - Properties
@@ -26,17 +26,17 @@ struct Country: Codable {
     let capital: String
     let population: Int
     let region: String
-    let alpha3Code: String
-    let borders: [String]
-    
+    let subregion: String
+    let nativeName: String
+
     // MARK: - init
-    init(flagUrl: String, name: String, capital: String, population: Int, region: String, alpha3Code: String, borders: [String]) {
+    init(flagUrl: String, name: String, capital: String, population: Int, region: String, subregion: String, nativeName: String) {
         self.flagUrl = flagUrl
         self.name = name
         self.capital = capital
         self.population = population
         self.region = region
-        self.alpha3Code = alpha3Code
-        self.borders = borders
+        self.subregion = subregion
+        self.nativeName = nativeName
     }
 }

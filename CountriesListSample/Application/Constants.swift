@@ -15,7 +15,13 @@ struct CLString {
     static let mainStoryboardName    : String =  "Main"
     static let unknown               : String =  "Unknown"
     static let defaultImageName      : String =  "default_image"
-    static let placeholderName       : String =   "No data"
+    static let noInfo                : String =   "<no info>"
+    static let capitalSection        : String =   "capital"
+    static let regionSection         : String =   "region"
+    static let populationSection     : String =   "population"
+    static let nativeNameSection     : String =   "nativeName"
+    static let searchPlaceholder     : String =   "Search countries..."
+    static let showDetailCountry     : String =   "showDetailCountry"
 }
 
 struct CLMessage {
@@ -26,4 +32,7 @@ struct CLMessage {
 
 struct CLSize {
     static let headerHeight           : CGFloat =  45
+    static let numberDetail           : Int     =  4
+    static let scaleFlagImage         : CGFloat =  1.7
+    static let oneRow                 : Int     =  1
 }

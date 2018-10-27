@@ -17,7 +17,7 @@ class CountryViewModelController {
     // MARK: - Properties
     private var dataByRegion = DataTypeRegion()
     private var dataByAll = DataTypeRegion()
-    private var viewModels = [CountryViewModel]()
+    var viewModels = [CountryViewModel]()
     private var retrieveCountriesCompletionBlock: RetrieveCountriesCompletionBlock?
     
     var viewModelsCount: Int {
@@ -29,7 +29,7 @@ class CountryViewModelController {
         retrieveCountriesCompletionBlock = completionBlock
         getData()
     }
-
+    
     func viewModel(at index: Int) -> CountryViewModel? {
         guard index >= 0 && index < viewModelsCount else { return nil }
         return viewModels[index]
@@ -47,7 +47,7 @@ class CountryViewModelController {
     private func configData() {
         dataByAll = [CLString.emptyString : viewModels]
         dataByRegion = Dictionary(grouping: viewModels,
-                                  by: { item in item!.region ?? "" })
+                                  by: { $0.region ?? CLString.emptyString })
     }
 }
 
@@ -63,7 +63,7 @@ private extension CountryViewModelController {
     
     static func initViewModels(_ countries: [Country]) -> [CountryViewModel] {
         return countries.map { country in
-                return CountryViewModel(country: country)
+            return CountryViewModel(country: country)
         }
     }
     

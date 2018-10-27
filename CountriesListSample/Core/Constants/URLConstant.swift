@@ -10,5 +10,5 @@ import Foundation
 
 
 struct ConfigURL {
-    static let apiGetAllCountry     = "https://restcountries.eu/rest/v2/all?fields=name;capital;flag;region;population;borders;alpha3Code"
+    static let apiGetAllCountry = "https://restcountries.eu/rest/v2/all"
 }

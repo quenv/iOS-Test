@@ -14,11 +14,11 @@ struct CountryViewModel {
     // MARK: - Properties
     let flagUrl: String
     let name: String
-    let capital: String
+    let capital: String?
     let population: Int?
     let region: String?
-    let alpha3Code: String?
-    let borders: [String]?
+    let subregion: String?
+    let nativeName: String?
 
     // MARK: - init
     init(country: Country) {
@@ -27,7 +27,7 @@ struct CountryViewModel {
         capital = country.capital
         population = country.population
         region = country.region
-        alpha3Code = country.alpha3Code
-        borders = country.borders
+        subregion = country.subregion
+        nativeName = country.nativeName
     }
 }

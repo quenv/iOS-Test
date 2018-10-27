@@ -1,19 +1,17 @@
 //
-//  BorderCell.swift
+//  CountryGenericInfoTableViewCell.swift
 //  CountriesListSample
 //
-//  Created by admin on 10/26/18.
+//  Created by admin on 10/27/18.
 //  Copyright © 2018 QueNguyen. All rights reserved.
 //
 
 import UIKit
 
-class BorderCell: UITableViewCell {
+class CountryGenericInfoTableViewCell: UITableViewCell {
 
-    // MARK: - IBOutlet
-    @IBOutlet weak var borderNameLabel: UILabel!
+    @IBOutlet weak var infoLabel: UILabel!
 
-    // MARK: - init
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -24,5 +22,5 @@ class BorderCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
+
 }
