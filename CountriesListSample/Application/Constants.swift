@@ -35,4 +35,5 @@ struct CLSize {
     static let numberDetail           : Int     =  4
     static let scaleFlagImage         : CGFloat =  1.7
     static let oneRow                 : Int     =  1
+    static let imageSize              : CGSize  =  CGSize(width: 100, height: 100)
 }

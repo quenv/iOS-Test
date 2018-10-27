@@ -32,7 +32,7 @@ extension UIImage {
                     return
                 }
                 if svg.hasSize() {
-                    svg.size = CGSize(width: 100, height: 100)
+                    svg.size = CLSize.imageSize
                 }
                 if let img = svg.uiImage {
                     map[url] = img

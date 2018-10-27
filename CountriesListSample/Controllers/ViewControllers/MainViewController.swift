@@ -36,6 +36,7 @@ class MainViewController: UIViewController {
     
     // MARK: - Handle data
     private func getData(){
+        UIImage.map.removeAll()
         countryViewModelController.retrieveCountries { [weak self] (success, error) in
             HUD.hide()
             guard let strongSelf = self else { return }
