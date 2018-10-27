@@ -1,3 +1,3 @@
 # iOS-Test
 
-Please open CountriesListSample.xcworkspace and run application on XCode 10
+Please open CountriesListSample.xcworkspace on Xcode 10 and run application
