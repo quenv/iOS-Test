@@ -17,7 +17,7 @@ class CountryViewModelController {
     // MARK: - Properties
     private var dataByRegion = DataTypeRegion()
     private var dataByAll = DataTypeRegion()
-    var viewModels = [CountryViewModel]()
+    private var viewModels = [CountryViewModel]()
     private var retrieveCountriesCompletionBlock: RetrieveCountriesCompletionBlock?
     
     var viewModelsCount: Int {
@@ -48,6 +48,15 @@ class CountryViewModelController {
         dataByAll = [CLString.emptyString : viewModels]
         dataByRegion = Dictionary(grouping: viewModels,
                                   by: { $0.region ?? CLString.emptyString })
+    }
+    
+    // MARK: - Filter data
+    func filterData(_ name: String) -> [CountryViewModel] {
+        var filterList = [CountryViewModel]()
+        filterList = viewModels.filter({ (country) -> Bool in
+            return country.name.lowercased().contains(name.lowercased())
+        })
+        return filterList
     }
 }
 

@@ -70,9 +70,7 @@ class MainViewController: UIViewController {
     }
     
     fileprivate func filterContentForSearchText(searchText: String) {
-        filteredCountries = countryViewModelController.viewModels.filter({ (country) -> Bool in
-            return country.name.lowercased().contains(searchText.lowercased())
-        })
+        filteredCountries = countryViewModelController.filterData(searchText)
         updateDataFilter()
         self.tableView.reloadData()
     }
