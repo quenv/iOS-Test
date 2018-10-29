@@ -17,7 +17,9 @@ extension UIImage {
     static func downloadImageFromUrl(_ url: String, completionHandler: @escaping (UIImage?) -> Void) {
         
         if let img = map[url] {
-            completionHandler(img)
+            DispatchQueue.global().async {
+                completionHandler(img)
+            }
             return
         }
         
@@ -26,22 +28,23 @@ extension UIImage {
                 completionHandler(nil)
                 return
             }
-            guard let svg = SVGKImage(data: flagData) else {
-                completionHandler(nil)
-                return
-            }
+
             DispatchQueue.global().async {
-                if svg.hasSize() {
-                    svg.size = CLSize.imageSize
+                let image = SVGKImage.init(dataAsynchronously: flagData, onCompletion: { (image, result) in
+                })
+                guard let img = image else {
+                    completionHandler(nil)
+                    return
                 }
-                if let img = svg.uiImage {
+                if img.hasSize() {
+                    img.size = CLSize.imageSize
+                }
+                if let img = img.uiImage {
                     map[url] = img
                     completionHandler(img)
                 }
-                else {
-                    completionHandler(nil)
-                }
             }
+        
         }
     }
 }
