@@ -39,9 +39,7 @@ extension UIImage {
                 }
                 if let img = svg.uiImage {
                     map[url] = img
-                    DispatchQueue.main.async {
-                        completionHandler(img)
-                    }
+                    completionHandler(img)
                 }
                 else {
                     completionHandler(nil)
