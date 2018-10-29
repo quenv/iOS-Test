@@ -17,9 +17,7 @@ extension UIImage {
     static func downloadImageFromUrl(_ url: String, completionHandler: @escaping (UIImage?) -> Void) {
         
         if let img = map[url] {
-            DispatchQueue.global().async {
-                completionHandler(img)
-            }
+            completionHandler(img)
             return
         }
         
