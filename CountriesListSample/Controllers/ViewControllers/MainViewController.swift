@@ -122,11 +122,10 @@ class MainViewController: UIViewController {
         case CLString.showDetailCountry:
             guard let indexPath = sender as? IndexPath else { return }
             guard let detailVC = segue.destination as? DetailViewController else { return }
-            if isFiltering() {
-                detailVC.countryModel = filteredCountries[indexPath.row]
-            } else if let viewModel = countryViewModelController.viewModel(at: indexPath.row) {
-                detailVC.countryModel = viewModel
-            }
+            let listCountriesDict = getListCountriesDict()
+            let dataModel = Array(listCountriesDict.values)[indexPath.section]
+            let viewModel = dataModel[indexPath.row]
+            detailVC.countryModel = viewModel
         default:
             break
         }
