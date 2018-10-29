@@ -28,23 +28,20 @@ extension UIImage {
                 completionHandler(nil)
                 return
             }
-       
-            guard let svg = SVGKImage(data: flagData) else {
-                completionHandler(nil)
-                return
-            }
-            DispatchQueue.global().async {
-                if svg.hasSize() {
-                    svg.size = CLSize.imageSize
+            SVGKImage.imageParser(withDataAsynchronously: flagData, onCompletion: { (img, result) in
+                if let svg = img {
+                    if svg.hasSize() {
+                        svg.size = CLSize.imageSize
+                    }
+                    if let img = svg.uiImage {
+                        map[url] = img
+                        completionHandler(img)
+                    }
+                    else {
+                        completionHandler(nil)
+                    }
                 }
-                if let img = svg.uiImage {
-                    map[url] = img
-                    completionHandler(img)
-                }
-                else {
-                    completionHandler(nil)
-                }
-            }
+            })
             
         }
     }
